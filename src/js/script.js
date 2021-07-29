@@ -156,12 +156,16 @@
       /*update calculated price in the HTML */
       
       thisProduct.priceSingle = thisProduct.priceElem.innerHTML;
+      price *= thisProduct.amountWidget.value;
       thisProduct.priceElem.innerHTML = price;
       console.log('formData',formData);
     }
     initAmountWidget(){
       const thisProduct = this;
       thisProduct.amountWidget = new AmountWidget (thisProduct.amountWidgetElem);
+      thisProduct.amountWidgetElem.addEventListener('updated', function(){
+        thisProduct.processOrder();
+      });
     }
   }
   class AmountWidget {
@@ -182,10 +186,14 @@
     setValue(value){
       const thisWidget = this;
       const newValue = parseInt(value);
-      if (thisWidget.value !== newValue && !isNaN(newValue)){
+      if (thisWidget.value !== newValue && !isNaN(newValue)
+        && newValue >= settings.amountWidget.defaultMin
+        && newValue <= settings.amountWidget.defaultMax
+      ){
         thisWidget.value = newValue;
       }
       thisWidget.input.value = thisWidget.value;
+      thisWidget.announce();
     }
     initActions(){
       const thisWidget = this;
@@ -200,6 +208,11 @@
         event.preventDefault();
         thisWidget.setValue(thisWidget.value + 1);
       });
+    }
+    announce(){
+      const thisWidget = this;
+      const event = new Event('updated');
+      thisWidget.element.dispatchEvent(event);
     }
   }
   const app = {

@@ -60,6 +60,7 @@
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.initOrderForm();
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
       console.log('new Product', thisProduct);
     }
@@ -77,6 +78,8 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem); 
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
     }
     initAccordion(){
       const thisProduct = this;
@@ -123,29 +126,80 @@
       /*set price to default price */
       let price = thisProduct.data.price;
       /*for every category (param)... */
-      for (let paramID in thisProduct.data.params) {
+      for (let paramId in thisProduct.data.params) {
         /*determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... } */
-        const param = thisProduct.data.params[paramID];
-        console.log(paramID,param);
+        const param = thisProduct.data.params[paramId];
+        console.log(paramId,param);
         /*for every option in this category */
-        for (let optionID in param.options) {
+        for (let optionId in param.options) {
           /*determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true } */
-          const option = param.options[optionID];
-          if(formData[paramID] && formData[paramID].includes(optionID)){
-            if(!option.default == true ){
-              price += option.price;
+          const option = param.options[optionId];
+          if (formData[paramId] && formData[paramId].includes(optionId)) {
+            if (!option.default) {
+              price = price + option.price;
             }
           } else {
-            if(option.default == true){
-              price -= option.price;
+            if (option.default) {
+              price = price - option.price;
+            }
+          }
+          const optionImage = thisProduct.imageWrapper.querySelector('.' + paramId + '-' + optionId);
+          if (optionImage) {
+            if (formData[paramId] && formData[paramId].includes(optionId)) {
+              optionImage.classList.add(classNames.menuProduct.imageVisible);
+            } else {
+              optionImage.classList.remove(classNames.menuProduct.imageVisible);
             }
           }
         }
       }
       /*update calculated price in the HTML */
+      
       thisProduct.priceSingle = thisProduct.priceElem.innerHTML;
       thisProduct.priceElem.innerHTML = price;
       console.log('formData',formData);
+    }
+    initAmountWidget(){
+      const thisProduct = this;
+      thisProduct.amountWidget = new AmountWidget (thisProduct.amountWidgetElem);
+    }
+  }
+  class AmountWidget {
+    constructor(element){
+      const thisWidget = this;
+      thisWidget.getElements(element);
+      thisWidget.setValue(thisWidget.input.value);
+      thisWidget.initActions();
+      
+    }
+    getElements(element){
+      const thisWidget = this;
+      thisWidget.element = element;
+      thisWidget.input = element.querySelector(select.widgets.amount.input);
+      thisWidget.linkDecrease = element.querySelector(select.widgets.amount.linkDecrease);
+      thisWidget.linkIncrease = element.querySelector(select.widgets.amount.linkIncrease);
+    }
+    setValue(value){
+      const thisWidget = this;
+      const newValue = parseInt(value);
+      if (thisWidget.value !== newValue && !isNaN(newValue)){
+        thisWidget.value = newValue;
+      }
+      thisWidget.input.value = thisWidget.value;
+    }
+    initActions(){
+      const thisWidget = this;
+      thisWidget.input.addEventListener('change', function(){
+        thisWidget.setValue(thisWidget.input.value);
+      });
+      thisWidget.linkDecrease.addEventListener('click', function(event){
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value - 1);
+      });
+      thisWidget.linkIncrease.addEventListener('click', function(event){
+        event.preventDefault();
+        thisWidget.setValue(thisWidget.value + 1);
+      });
     }
   }
   const app = {

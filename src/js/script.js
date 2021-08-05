@@ -96,7 +96,6 @@
       thisProduct.initOrderForm();
       thisProduct.initAmountWidget();
       thisProduct.processOrder();
-      console.log('new Product', thisProduct);
     }
     renderInMenu(){
       const thisProduct = this;
@@ -118,20 +117,12 @@
     }
     initAccordion(){
       const thisProduct = this;
-      /* find the clickable trigger (the element that should react to clicking) */
-      /* START: add event listener to clickable trigger on event click */
       thisProduct.dom.accordionTriggers.addEventListener('click', function(event) {
-        /* prevent default action for event */
         event.preventDefault();	
-        /* find active product (product that has active class) */
         const activeProduct = document.querySelector(select.menuProduct.activeProduct);	
-        console.log('activeProduct: ', activeProduct);
-        /* if there is active product and it's not thisProduct.element, remove class active from it */
         if (activeProduct !== null && activeProduct !== thisProduct.element){	
           activeProduct.classList.remove(classNames.menuProduct.wrapperActive);    
-          console.log('remove class active');
         }
-        /* toggle active class on thisProduct.element */
         thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);	
       });
     }
@@ -156,18 +147,12 @@
    
     processOrder(){
       const thisProduct = this;
-      /*covert form to object structure e.g. {sauce: ['tomato'], toppings: ['olives', 'redPeppers']} */
       const formData = utils.serializeFormToObject(thisProduct.dom.form);
-      /*set price to default price */
       let price = thisProduct.data.price;
-      /*for every category (param)... */
       for (let paramId in thisProduct.data.params) {
-        /*determine param value, e.g. paramId = 'toppings', param = { label: 'Toppings', type: 'checkboxes'... } */
         const param = thisProduct.data.params[paramId];
         console.log(paramId,param);
-        /*for every option in this category */
         for (let optionId in param.options) {
-          /*determine option value, e.g. optionId = 'olives', option = { label: 'Olives', price: 2, default: true } */
           const option = param.options[optionId];
           if (formData[paramId] && formData[paramId].includes(optionId)) {
             if (!option.default) {
@@ -188,11 +173,9 @@
           }
         }
       }
-      /*update calculated price in the HTML */
       thisProduct.priceSingle = price;
       price *= thisProduct.amountWidget.value;
       thisProduct.dom.priceElem.innerHTML = price;
-      console.log('formData',formData);
     }
     initAmountWidget(){
       const thisProduct = this;
@@ -291,7 +274,6 @@
       thisCart.products = [];
       thisCart.getElements(element);
       thisCart.initActions();
-      console.log('new Cart', thisCart);
     }
     getElements(element){
       const thisCart = this;
@@ -308,12 +290,10 @@
     }
     add(menuProduct){
       const thisCart = this;
-      console.log('adding product', menuProduct);
       const generatedHTML = templates.cartProduct(menuProduct);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
       thisCart.dom.productList.appendChild(generatedDOM);
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
-      console.log('thisCart.products', thisCart.products);
     }
   }
   class CartProduct {
@@ -353,7 +333,6 @@
   const app = {
     initMenu: function(){
       const thisApp = this;
-      console.log('thisApp.data:',thisApp.data);
       for(let productData in thisApp.data.products){
         new Product(productData, thisApp.data.products[productData]);
       }

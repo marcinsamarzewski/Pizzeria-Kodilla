@@ -363,7 +363,6 @@
       for(let prod of thisCart.products){
         payload.products.push(prod.getData());
       }
-      console.log(payload);
       const options = {
         method: 'POST',
         headers: {
@@ -371,12 +370,7 @@
         },
         body: JSON.stringify(payload),
       };
-      fetch(url, options)
-        .then(function(response){
-          return response.json();
-        })
-        .then(function(parsedResponse){
-        });
+      fetch(url, options);
     }
   }
   class CartProduct {

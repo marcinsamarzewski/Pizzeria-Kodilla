@@ -305,7 +305,7 @@
       thisCart.dom.productList.addEventListener('remove', function(event){
         thisCart.remove(event.detail.cartProduct);
       });
-      thisCart.dom.productList.addEventListener('submit', function(event){
+      thisCart.dom.form.addEventListener('submit', function(event){
         event.preventDefault();
         thisCart.sendOrder();
       });
@@ -360,9 +360,23 @@
         deliveryFee: thisCart.deliveryFee,
         products: [],
       };
-      for(let prod of thisCart.products) {
+      for(let prod of thisCart.products){
         payload.products.push(prod.getData());
       }
+      console.log(payload);
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      };
+      fetch(url, options)
+        .then(function(response){
+          return response.json();
+        })
+        .then(function(parsedResponse){
+        });
     }
   }
   class CartProduct {

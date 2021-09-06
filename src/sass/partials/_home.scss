@@ -1,0 +1,164 @@
+.home-wrapper {
+  margin: ($base-size * 3.5) auto;
+  padding: ($base-size * 6) ($base-size * 4);
+  background: $color-light;
+  border-bottom: 1px solid lighten($color-dark, 70%);
+  border-radius: $radius;
+}
+
+.page-selection {
+  margin: 0 0 ($base-size * 8) 0;
+}
+
+.tiles-wrapper {
+  @include flex(row, center, space-between);
+  height: ($base-size * 10);
+  text-align: center;
+  margin: 0 0 $base-size 0;
+
+  .tile {
+    border-radius: $radius;
+  }
+}
+
+.page__tile-title {
+  @extend .h1;
+  color: $color-light;
+  font-weight: $font-bold;
+  text-decoration: none;
+}
+
+.page__tile-subtitle {
+  text-transform: uppercase;
+  color: $color-light;
+  font-weight: $font-light;
+}
+
+.sm {
+  .order-online {
+    margin: 0 ($base-size * 0.5) 0 0;
+    background-image: url('../images/homePage/pizza-1.jpg');
+  }
+  
+  .book-table {
+    margin: 0 0 0 ($base-size * 0.5);
+    background-image: url('../images/homePage/pizza-2.jpg');
+  }
+  
+  .tile-small {
+    @include flex(column, center, center);
+    background-position: center;
+    background-size: cover;
+    width: 50%;
+    height: 100%;
+    transition: transform ease-in-out;
+    
+    .page__tile-title {
+      transition-duration: 0.75s;
+      display: block;
+    }
+    
+    .page__tile-subtitle {
+      transition-duration: 0.75s;
+      text-transform: initial;
+      display: none;
+    }
+  }
+}
+
+.tile-small:hover {
+  .page__tile {
+    &-title {
+      transform: translateY(-10px);
+    }
+
+    &-subtitle {
+      display: block;
+    }
+  }
+}
+
+.lg {
+  background: $color-main;
+  border-radius: $radius;
+
+  .tile-large {
+    width: 100%;
+  }
+}
+
+/* Carousel*/
+
+.main-carousel {
+  .carousel-cell {
+    @include flex(row, center, center);
+    width: 100%;
+    height: 250px;
+
+    .carousel-review {
+      padding-left: 40px;
+    }
+
+  }
+}
+
+/* Image gallery */
+
+img {
+  object-fit: cover;
+  height: ($base-size * 16);
+  width: ($base-size * 16);
+  border-radius: $radius;
+}
+
+.image-gallery {
+  @include flex(row, center, space-between);
+  flex-wrap: wrap;
+  margin: ($base-size * 8) 0 0 0;
+  padding: ($base-size * 2) 0;
+
+  .image-wrapper {
+    position: relative;
+    margin: 0 0 ($base-size* 0.5) 0;
+    padding: 0;
+    z-index: 1;
+    
+    .icon-wrapper {
+      @include center();
+      text-align: center;
+      width: 80px;
+      z-index: 2;
+      font-size: ($base-size * 2);
+      visibility: hidden;
+      overflow: hidden;
+      
+      a {
+        padding: 0 3px;
+        color: $color-light;
+      }
+    }
+  }
+}
+
+.image-wrapper:hover {
+  img {
+    opacity: 0.75;
+  }
+  
+  .icon-wrapper {
+    visibility: visible;
+  }
+}
+
+.icon-wrapper > a:hover {
+  i {
+    color: $color-main;
+    transform: scale(1.25);
+  }
+}
+
+footer {
+  a {
+    color: $color-main;
+  }
+}

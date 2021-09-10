@@ -55,10 +55,6 @@ export const select = {
     phone: '.order-confirmation [name="phone"]',
     address: '.order-confirmation [name="address"]',
   },
-  // home: {
-  //   booking: '.book-table',
-  //   order: '.order-online',
-  // },
   nav: {
     links: '.page-nav a',
   },
@@ -81,7 +77,6 @@ export const select = {
     remove: '[href="#remove"]',
   },
 };
-
 export const classNames = {
   menuProduct: {
     wrapperActive: 'active',
@@ -99,7 +94,6 @@ export const classNames = {
     active: 'active',
   }
 };
-
 export const settings = {
   amountWidget: {
     defaultValue: 1,
@@ -131,7 +125,6 @@ export const settings = {
     repeatParam: 'repeat_ne=false',
   },
 };
-
 export const templates = {
   menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),

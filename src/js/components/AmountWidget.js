@@ -3,7 +3,7 @@ import BaseWidget from './BaseWidget.js';
 
 class AmountWidget extends BaseWidget{
   constructor(element){
-    super(element, settings.amountWidget.defaultValue); 
+    super(element, settings.amountWidget.defaultValue); // in constructor of inherited class (AmountWidget) the constructor of parent class (BaseWidget) has to be called (super();)
 
     const thisWidget = this;
 
@@ -11,11 +11,13 @@ class AmountWidget extends BaseWidget{
     thisWidget.setValue(thisWidget.dom.input.value || settings.amountWidget.defaultValue);
     thisWidget.initActions();
 
-   
+    //console.log(`AmountWidget:`, thisWidget);
+    //console.log(`constructor arguments`, element);
   }
   getElements(){
     const thisWidget = this;
 
+    //thisWidget.element = element; // may be deleted, 'cause BaseWidget handles giving the wrapper/element
     thisWidget.dom.input = thisWidget.dom.wrapper.querySelector(select.widgets.amount.input);
     thisWidget.dom.linkDecrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkDecrease);
     thisWidget.dom.linkIncrease = thisWidget.dom.wrapper.querySelector(select.widgets.amount.linkIncrease);

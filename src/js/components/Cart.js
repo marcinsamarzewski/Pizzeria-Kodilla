@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {settings, select, classNames, templates} from '../settings.js';
 import utils from '../utils.js';
 import CartProduct from './CartProduct.js';
@@ -12,20 +13,21 @@ class Cart{
     const thisCart = this;
     thisCart.dom = {};
     thisCart.dom.wrapper = element;
-    thisCart.dom.toggleTrigger = element.querySelector(select.cart.toggleTrigger);
-    thisCart.dom.productList = element.querySelector(select.cart.productList);
-    thisCart.dom.deliveryFee = element.querySelector(select.cart.deliveryFee);
-    thisCart.dom.subTotalPrice = element.querySelector(select.cart.subtotalPrice);
-    thisCart.dom.totalNumber = element.querySelector(select.cart.totalNumber);
-    thisCart.dom.totalPrice = element.querySelectorAll(select.cart.totalPrice);
-    thisCart.dom.form = element.querySelector(select.cart.form);
-    thisCart.dom.address = element.querySelector(select.cart.address);
-    thisCart.dom.phone = element.querySelector(select.cart.phone);
+    thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+    thisCart.dom.productList = thisCart.dom.wrapper.querySelector(select.cart.productList);
+    thisCart.dom.deliveryFee = thisCart.dom.wrapper.querySelector(select.cart.deliveryFee);
+    thisCart.dom.subTotalPrice = thisCart.dom.wrapper.querySelector(select.cart.subtotalPrice);
+    thisCart.dom.totalNumber = thisCart.dom.wrapper.querySelector(select.cart.totalNumber);
+    thisCart.dom.totalPrice = thisCart.dom.wrapper.querySelectorAll(select.cart.totalPrice);
+    thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
+    thisCart.dom.address = thisCart.dom.form.querySelector(select.cart.address);
+    thisCart.dom.phone = thisCart.dom.form.querySelector(select.cart.phone);
   }
   initActions(){
     const thisCart = this;
-    thisCart.dom.toggleTrigger.addEventListener('click', function(){
-      thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+    thisCart.dom.toggleTrigger.addEventListener('click', function(event){
+      event.preventDefault();
+      thisCart.dom.wrapper.classList.toggle(classNames.menuProduct.wrapperActive);
     });
     thisCart.dom.productList.addEventListener('updated', function(){
       thisCart.update();
@@ -46,13 +48,6 @@ class Cart{
     thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
     thisCart.update();
   }
-  remove (cartProduct){
-    const thisCart = this;
-    const indexOfProductToRemove = thisCart.products.indexOf(cartProduct);
-    thisCart.products.splice(indexOfProductToRemove, 1);
-    cartProduct.dom.wrapper.remove();
-    thisCart.update();
-  }
   update(){
     const thisCart = this;
     thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
@@ -65,7 +60,6 @@ class Cart{
     thisCart.totalPrice;
     if(thisCart.totalNumber === 0){
       thisCart.totalPrice = 0;
-      thisCart.deliveryFee = 0;
     } else {
       thisCart.totalPrice = thisCart.deliveryFee + thisCart.subTotalPrice;
     }
@@ -75,6 +69,14 @@ class Cart{
     for(let singleDomTotalPrice of thisCart.dom.totalPrice){
       singleDomTotalPrice.innerHTML = thisCart.totalPrice;
     }
+  }
+  remove(cartProduct){
+    const thisCart = this;
+    const cartProductHTML = cartProduct.dom.wrapper;
+    cartProductHTML.remove();
+    const indexOfcartProduct = thisCart.products.indexOf(cartProduct);
+    const removeCartProduct = thisCart.products.splice(indexOfcartProduct, 1);
+    thisCart.update();
   }
   sendOrder(){
     const thisCart = this;
@@ -91,7 +93,6 @@ class Cart{
     for(let prod of thisCart.products){
       payload.products.push(prod.getData());
     }
-    console.log(payload);
     const options = {
       method: 'POST',
       headers: {
@@ -104,9 +105,7 @@ class Cart{
         return response.json();
       })
       .then(function(parsedResponse){
-        console.log('parsedResponse', parsedResponse);
       });
   }
-    
 }
 export default Cart;

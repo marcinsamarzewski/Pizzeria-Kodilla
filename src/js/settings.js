@@ -1,14 +1,18 @@
 export const select = {
   templateOf: {
     menuProduct: '#template-menu-product',
-    cartProduct: '#template-cart-product', // CODE ADDED
+    cartProduct: '#template-cart-product',
     bookingWidget: '#template-booking-widget',
+    homePage: '#template-home-page',
   },
   containerOf: {
     menu: '#product-list',
     cart: '#cart',
     pages: '#pages',
     booking: '.booking-wrapper',
+    tables: '.floor-plan',
+    starters: '.starters',
+    homePage: '.home-wrapper',
   },
   all: {
     menuProducts: '#product-list > .product',
@@ -25,7 +29,7 @@ export const select = {
   },
   widgets: {
     amount: {
-      input: 'input.amount', //CODE CHANGED
+      input: 'input.amount',
       linkDecrease: 'a[href="#less"]',
       linkIncrease: 'a[href="#more"]',
     },
@@ -38,16 +42,26 @@ export const select = {
       input: 'input[type="range"]',
       output: '.output',
     },
+    carousel: {
+      wrapper: '.main-carousel',
+    }
   },
   booking: {
     peopleAmount: '.people-amount',
     hoursAmount: '.hours-amount',
     tables: '.floor-plan .table',
+    form: '.booking-form',
+    formBooking: '.booking-form [type="submit"]',
+    phone: '.order-confirmation [name="phone"]',
+    address: '.order-confirmation [name="address"]',
   },
+  // home: {
+  //   booking: '.book-table',
+  //   order: '.order-online',
+  // },
   nav: {
-    links: '.main-nav a',
+    links: '.page-nav a',
   },
-  //CODE ADDED START
   cart: {
     productList: '.cart__order-summary',
     toggleTrigger: '.cart__summary',
@@ -66,20 +80,17 @@ export const select = {
     edit: '[href="#edit"]',
     remove: '[href="#remove"]',
   },
-  //CODE ADDED END
 };
+
 export const classNames = {
   menuProduct: {
     wrapperActive: 'active',
     imageVisible: 'active',
   },
-  //CODE ADDED START
-  cart: {
-    wrapperActive: 'active',
-  },
   booking: {
     loading: 'loading',
     tableBooked: 'booked',
+    selectedTable: 'selected',
   },
   nav: {
     active: 'active',
@@ -87,7 +98,6 @@ export const classNames = {
   pages: {
     active: 'active',
   }
-  
 };
 
 export const settings = {
@@ -95,8 +105,7 @@ export const settings = {
     defaultValue: 1,
     defaultMin: 1,
     defaultMax: 9,
-  }, // CODE CHANGED
-  // CODE ADDED START
+  },
   cart: {
     defaultDeliveryFee: 20,
   },
@@ -111,22 +120,21 @@ export const settings = {
     tableIdAttribute: 'data-table',
   },
   db: {
-    url: '//localhost:3131',
+    url: '//' + window.location.hostname + (window.location.hostname=='localhost' ? ':3131' : ''),
     products: 'products',
     orders: 'orders',
-    booking: 'booking',
-    event: 'event',
+    bookings: 'bookings',
+    events: 'events',
     dateStartParamKey: 'date_gte',
     dateEndParamKey: 'date_lte',
     notRepeatParam: 'repeat=false',
     repeatParam: 'repeat_ne=false',
   },
-  // CODE ADDED END
 };
+
 export const templates = {
   menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
-  // CODE ADDED START
   cartProduct: Handlebars.compile(document.querySelector(select.templateOf.cartProduct).innerHTML),
   bookingWidget: Handlebars.compile(document.querySelector(select.templateOf.bookingWidget).innerHTML),
-  // CODE ADDED END
+  homePage: Handlebars.compile(document.querySelector(select.templateOf.homePage).innerHTML),
 };

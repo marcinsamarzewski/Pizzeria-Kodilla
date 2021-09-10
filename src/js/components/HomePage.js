@@ -19,5 +19,4 @@ class HomePage{
     thisHomePage.carouselWidget = new Carousel(thisHomePage.dom.carouselWidget);
   }
 }
-
 export default HomePage;

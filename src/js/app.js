@@ -26,6 +26,7 @@ const app = {
         window.location.hash = '#/' + id; 
       });
     }
+    
   },
   activatePage: function(pageId){
     const thisApp = this;
